@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Badge from "./Badge";
 import CardSwap, { Card } from "./CardSwap";
+import BlurText from "./BlurText";
 
 export default function Hero() {
   return (
@@ -8,9 +9,13 @@ export default function Hero() {
       <div className="relative grid gap-10 lg:grid-cols-2 lg:items-center">
         <div className="space-y-6">
           <Badge tone="ember">Portfolio</Badge>
-          <h1 className="text-4xl font-display font-semibold text-white sm:text-5xl">
-            Visual storytelling that blends motion, design, and the web.
-          </h1>
+          <BlurText
+            text="Visual storytelling that blends motion, design, and the web."
+            delay={120}
+            animateBy="words"
+            direction="top"
+            className="text-4xl font-display font-semibold text-white sm:text-5xl"
+          />
           <p className="text-lg text-slate-100">
             I craft cinematic sequences, bold identities, and web experiences that feel alive. Explore the work or
             request access to the admin to see how the projects are managed.
