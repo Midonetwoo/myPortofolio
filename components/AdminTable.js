@@ -22,9 +22,10 @@ export default function AdminTable({ initialData }) {
   const [editDraft, setEditDraft] = useState(null);
   const [editImageUrl, setEditImageUrl] = useState("");
 
-  const totalByType = useMemo(() => {
-    return items.reduce((acc, item) => ({ ...acc, [item.type]: (acc[item.type] || 0) + 1 }), {});
-  }, [items]);
+  const totalByType = useMemo(
+    () => items.reduce((acc, item) => ({ ...acc, [item.type]: (acc[item.type] || 0) + 1 }), {}),
+    [items]
+  );
 
   const showAlert = (message, type = "info") => {
     setAlert({ message, type });
