@@ -1,6 +1,6 @@
-import GalleryGrid from "../../components/GalleryGrid";
 import SectionHeader from "../../components/SectionHeader";
 import { portfolioItems } from "../../data/portfolio";
+import MasonryGallery from "./MasonryGallery";
 
 export const metadata = {
   title: "Gallery | Midonet Portfolio",
@@ -8,13 +8,13 @@ export const metadata = {
 };
 
 export default function GalleryPage() {
-  const images = portfolioItems.flatMap((item) =>
+  const heights = [340, 280, 420, 360, 300, 380, 440, 320];
+  const items = portfolioItems.flatMap((item, index) =>
     item.images.map((image, idx) => ({
       id: `${item.id}-${idx}`,
-      image,
-      title: item.title,
-      subtitle: item.type,
-      type: item.type
+      img: `${image}?auto=format&fit=crop&w=1200&q=80`,
+      url: `/portfolio/${item.id}`,
+      height: heights[(index + idx) % heights.length]
     }))
   );
 
@@ -25,7 +25,7 @@ export default function GalleryPage() {
         title="Frames, stills, and visual pulls"
         description="A curated stream of visuals captured from cinematography cuts, poster studies, and website hero images."
       />
-      <GalleryGrid items={images} />
+      <MasonryGallery items={items} />
     </div>
   );
 }
