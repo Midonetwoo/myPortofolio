@@ -14,7 +14,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${dmSans.variable} ${inter.variable}`}>
-      <body className="bg-mist text-ink">
+      <body className="bg-[var(--background)] text-[var(--foreground)]">
         <NavBar />
         <main className="mx-auto flex min-h-screen max-w-6xl flex-col gap-12 px-4 pb-16 pt-10 sm:px-8 md:px-10">
           {children}
