@@ -3,6 +3,7 @@ import PortfolioGrid from "../components/PortfolioGrid";
 import SectionHeader from "../components/SectionHeader";
 import Badge from "../components/Badge";
 import { readStore } from "../lib/portfolioStore";
+import HomeCategorySection from "../components/HomeCategorySection";
 
 export default async function HomePage() {
   const portfolioItems = await readStore();
@@ -20,6 +21,15 @@ export default async function HomePage() {
           action={<Badge tone="neutral">{portfolioItems.length} projects</Badge>}
         />
         <PortfolioGrid items={featured} />
+      </section>
+
+      <section className="space-y-6">
+        <SectionHeader
+          eyebrow="Filter by discipline"
+          title="Flow through categories"
+          description="Hover or tap the flowing menu to filter the portfolio list by cinematography, graphic design, or websites."
+        />
+        <HomeCategorySection items={portfolioItems} />
       </section>
 
       <section className="grid gap-6 lg:grid-cols-3">
