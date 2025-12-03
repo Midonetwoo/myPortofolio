@@ -4,7 +4,7 @@ const links = [
   { href: "/", label: "Home" },
   { href: "/gallery", label: "Gallery" },
   { href: "/about", label: "About" },
-  { href: "/admin/login", label: "Admin" }
+  { href: "/admin", label: "Admin" }
 ];
 
 export default function NavBar() {
@@ -25,12 +25,6 @@ export default function NavBar() {
               {link.label}
             </Link>
           ))}
-          <Link
-            href="/admin"
-            className="rounded-full bg-ink px-4 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:shadow-lg"
-          >
-            Dashboard
-          </Link>
         </div>
       </nav>
     </header>
