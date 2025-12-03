@@ -34,13 +34,7 @@ export default function HomeCategorySection({ items }) {
     <section className="grid gap-6 lg:grid-cols-3">
       <div className="lg:col-span-1">
         <div className="h-[320px] sm:h-[360px]">
-          <FlowingMenu
-            items={menuItems.map((m) => ({
-              ...m,
-              link: "#",
-              onClick: () => setActive(m.text === "Graphic Design" ? "Graphic Design" : m.text === "Cinematography" ? "cinematography" : "Website")
-            }))}
-          />
+          <FlowingMenu items={menuItems} />
         </div>
       </div>
       <div className="lg:col-span-2 space-y-3">

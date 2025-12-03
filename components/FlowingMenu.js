@@ -15,7 +15,7 @@ export default function FlowingMenu({ items = [] }) {
   );
 }
 
-function MenuItem({ link, text, image }) {
+function MenuItem({ link, text, image, onClick }) {
   const itemRef = React.useRef(null);
   const marqueeRef = React.useRef(null);
   const marqueeInnerRef = React.useRef(null);
@@ -68,6 +68,10 @@ function MenuItem({ link, text, image }) {
         href={link}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        onClick={(e) => {
+          e.preventDefault();
+          onClick?.();
+        }}
       >
         {text}
       </a>
