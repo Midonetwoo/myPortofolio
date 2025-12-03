@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Badge from "./Badge";
-import SpotlightCard from "./SpotlightCard";
+import CardSwap, { Card } from "./CardSwap";
 
 export default function Hero() {
   return (
@@ -31,21 +31,25 @@ export default function Hero() {
           </div>
         </div>
         <div className="grid gap-4">
-          <SpotlightCard spotlightColor="rgba(255,255,255,0.2)" className="bg-white/10 text-white backdrop-blur">
-            <p className="text-xs uppercase tracking-[0.2em] text-accent">Cinematography</p>
-            <h3 className="mt-2 text-xl font-semibold">Cinematic sequences</h3>
-            <p className="text-sm text-slate-200">Short films, aerials, and moody cuts shaped for screens and stages.</p>
-          </SpotlightCard>
-          <SpotlightCard spotlightColor="rgba(255,255,255,0.18)" className="bg-white/10 text-white backdrop-blur">
-            <p className="text-xs uppercase tracking-[0.2em] text-accent">Graphic Design</p>
-            <h3 className="mt-2 text-xl font-semibold">Bold identities</h3>
-            <p className="text-sm text-slate-200">Poster systems, logo marks, and kinetic visuals ready for campaigns.</p>
-          </SpotlightCard>
-          <SpotlightCard spotlightColor="rgba(255,255,255,0.15)" className="bg-white/10 text-white backdrop-blur">
-            <p className="text-xs uppercase tracking-[0.2em] text-accent">Web</p>
-            <h3 className="mt-2 text-xl font-semibold">Digital experiences</h3>
-            <p className="text-sm text-slate-200">Fast, responsive sites with immersive storytelling and motion.</p>
-          </SpotlightCard>
+          <div className="relative min-h-[360px]">
+            <CardSwap cardDistance={50} verticalDistance={60} delay={4200} pauseOnHover={false}>
+              <Card className="bg-white/90 px-5 py-4 text-left text-ink shadow-2xl">
+                <p className="text-xs uppercase tracking-[0.2em] text-accent">Cinematography</p>
+                <h3 className="mt-2 text-xl font-semibold text-ink">Cinematic sequences</h3>
+                <p className="text-sm text-slate-600">Short films, aerials, and moody cuts shaped for screens and stages.</p>
+              </Card>
+              <Card className="bg-white/90 px-5 py-4 text-left text-ink shadow-2xl">
+                <p className="text-xs uppercase tracking-[0.2em] text-accent">Graphic Design</p>
+                <h3 className="mt-2 text-xl font-semibold text-ink">Bold identities</h3>
+                <p className="text-sm text-slate-600">Poster systems, logo marks, and kinetic visuals ready for campaigns.</p>
+              </Card>
+              <Card className="bg-white/90 px-5 py-4 text-left text-ink shadow-2xl">
+                <p className="text-xs uppercase tracking-[0.2em] text-accent">Web</p>
+                <h3 className="mt-2 text-xl font-semibold text-ink">Digital experiences</h3>
+                <p className="text-sm text-slate-600">Fast, responsive sites with immersive storytelling and motion.</p>
+              </Card>
+            </CardSwap>
+          </div>
         </div>
       </div>
     </section>
