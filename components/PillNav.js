@@ -17,9 +17,9 @@ export default function PillNav({
   activeHref,
   className = "",
   ease = "power3.out",
-  baseColor = "#0b1021",
-  pillColor = "#ffffff",
-  hoveredPillTextColor = "#ffffff",
+  baseColor = "var(--foreground)",
+  pillColor = "var(--card)",
+  hoveredPillTextColor = "var(--primary-foreground)",
   pillTextColor,
   onMobileMenuClick,
   initialLoadAnimation = true
@@ -166,7 +166,7 @@ export default function PillNav({
     ["--pill-text"]: resolvedPillTextColor,
     ["--nav-h"]: "42px",
     ["--pill-pad-x"]: "18px",
-    ["--pill-gap"]: "3px"
+    ["--pill-gap"]: "24px"
   };
 
   return (
@@ -175,7 +175,7 @@ export default function PillNav({
         <div
           ref={navItemsRef}
           className="relative hidden items-center rounded-full md:flex"
-          style={{ height: "var(--nav-h)", background: "var(--base, #000)" }}
+          style={{ height: "var(--nav-h)", background: "var(--base)" }}
         >
           <ul role="menubar" className="m-0 flex h-full list-none items-stretch p-[3px]" style={{ gap: "var(--pill-gap)" }}>
             {items.map((item, i) => {
@@ -191,7 +191,7 @@ export default function PillNav({
                 <>
                   <span
                     className="hover-circle pointer-events-none absolute left-1/2 bottom-0 z-[1] block rounded-full"
-                    style={{ background: "var(--base, #000)", willChange: "transform" }}
+                    style={{ background: "var(--base)", willChange: "transform" }}
                     aria-hidden="true"
                     ref={(el) => {
                       circleRefs.current[i] = el;
@@ -211,7 +211,7 @@ export default function PillNav({
                   </span>
                   <span
                     className="absolute left-1/2 -bottom-[6px] h-2 w-2 -translate-x-1/2 rounded-full transition-opacity duration-200"
-                    style={{ background: "var(--base, #000)", opacity: isActive ? 1 : 0 }}
+                    style={{ background: "var(--base)", opacity: isActive ? 1 : 0 }}
                   />
                 </>
               );
@@ -260,16 +260,16 @@ export default function PillNav({
           style={{
             width: "var(--nav-h)",
             height: "var(--nav-h)",
-            background: "var(--base, #000)"
+            background: "var(--base)"
           }}
         >
           <span
             className="hamburger-line h-0.5 w-4 origin-center rounded transition-all duration-[10ms] ease-[cubic-bezier(0.25,0.1,0.25,1)]"
-            style={{ background: "var(--pill-bg, #fff)" }}
+            style={{ background: "var(--pill-bg)" }}
           />
           <span
             className="hamburger-line h-0.5 w-4 origin-center rounded transition-all duration-[10ms] ease-[cubic-bezier(0.25,0.1,0.25,1)]"
-            style={{ background: "var(--pill-bg, #fff)" }}
+            style={{ background: "var(--pill-bg)" }}
           />
         </button>
       </nav>
@@ -278,7 +278,7 @@ export default function PillNav({
         ref={mobileMenuRef}
         className="absolute left-4 right-4 top-[3em] z-[998] origin-top rounded-[27px] shadow-[0_8px_32px_rgba(0,0,0,0.12)] md:hidden"
         style={{
-          background: "var(--base, #f0f0f0)",
+          background: "var(--card)",
           visibility: isMobileMenuOpen ? "visible" : "hidden",
           opacity: isMobileMenuOpen ? 1 : 0
         }}
@@ -286,16 +286,16 @@ export default function PillNav({
         <ul className="m-0 flex list-none flex-col gap-[3px] p-[3px]">
           {items.map((item) => {
             const defaultStyle = {
-              background: "var(--pill-bg, #fff)",
-              color: "var(--pill-text, #fff)"
+              background: "var(--pill-bg)",
+              color: "var(--pill-text)"
             };
             const hoverIn = (e) => {
               e.currentTarget.style.background = "var(--base)";
-              e.currentTarget.style.color = "var(--hover-text, #fff)";
+              e.currentTarget.style.color = "var(--hover-text)";
             };
             const hoverOut = (e) => {
-              e.currentTarget.style.background = "var(--pill-bg, #fff)";
-              e.currentTarget.style.color = "var(--pill-text, #fff)";
+              e.currentTarget.style.background = "var(--pill-bg)";
+              e.currentTarget.style.color = "var(--pill-text)";
             };
 
             const linkClasses =
