@@ -1,15 +1,10 @@
 import Link from "next/link";
 import Badge from "./Badge";
+import CardSwap, { Card } from "./CardSwap";
 
 export default function Hero() {
   return (
-    <section
-      className="relative overflow-hidden rounded-3xl px-6 py-14 shadow-2xl sm:px-12 sm:py-16"
-      style={{
-        background:
-          "radial-gradient(circle at 20% 20%, rgba(255,255,255,0.08), transparent 35%), radial-gradient(circle at 80% 0%, rgba(255,255,255,0.05), transparent 25%), linear-gradient(135deg, var(--primary), var(--accent))"
-      }}
-    >
+    <section className="relative overflow-hidden rounded-3xl px-6 py-14 shadow-2xl sm:px-12 sm:py-16" style={{ background: "linear-gradient(135deg, var(--primary), var(--accent))" }}>
       <div className="relative grid gap-10 lg:grid-cols-2 lg:items-center">
         <div className="space-y-6">
           <Badge tone="ember">Portfolio</Badge>
@@ -35,25 +30,24 @@ export default function Hero() {
             </Link>
           </div>
         </div>
-        <div className="relative">
-          <div className="absolute inset-4 rounded-[32px] border border-white/10 blur-lg" />
-          <div className="relative rounded-[32px] bg-white/5 p-4 shadow-2xl backdrop-blur">
-            <div className="grid grid-cols-3 gap-3">
-              {["cinema", "design", "web"].map((label) => (
-                <div
-                  key={label}
-                  className="aspect-[4/5] rounded-2xl bg-gradient-to-br from-white/15 to-white/5 p-3 text-white shadow-inner"
-                >
-                  <p className="text-sm font-semibold capitalize">{label}</p>
-                  <div className="mt-4 h-full rounded-xl bg-black/50" />
-                </div>
-              ))}
-            </div>
-            <div className="mt-3 flex items-center justify-between rounded-2xl bg-white/10 px-4 py-3 text-white">
-              <span className="text-sm font-semibold">6 case studies</span>
-              <span className="text-xs uppercase tracking-[0.2em] text-white/70">Multi-format</span>
-            </div>
-          </div>
+        <div className="relative min-h-[360px]">
+          <CardSwap cardDistance={50} verticalDistance={60} delay={4200} pauseOnHover={false}>
+            <Card className="bg-white/90 px-5 py-4 text-left text-ink shadow-2xl">
+              <p className="text-xs uppercase tracking-[0.2em] text-accent">Cinematography</p>
+              <h3 className="mt-2 text-xl font-semibold text-ink">Cinematic sequences</h3>
+              <p className="text-sm text-slate-600">Short films, aerials, and moody cuts shaped for screens and stages.</p>
+            </Card>
+            <Card className="bg-white/90 px-5 py-4 text-left text-ink shadow-2xl">
+              <p className="text-xs uppercase tracking-[0.2em] text-accent">Graphic Design</p>
+              <h3 className="mt-2 text-xl font-semibold text-ink">Bold identities</h3>
+              <p className="text-sm text-slate-600">Poster systems, logo marks, and kinetic visuals ready for campaigns.</p>
+            </Card>
+            <Card className="bg-white/90 px-5 py-4 text-left text-ink shadow-2xl">
+              <p className="text-xs uppercase tracking-[0.2em] text-accent">Web</p>
+              <h3 className="mt-2 text-xl font-semibold text-ink">Digital experiences</h3>
+              <p className="text-sm text-slate-600">Fast, responsive sites with immersive storytelling and motion.</p>
+            </Card>
+          </CardSwap>
         </div>
       </div>
     </section>
