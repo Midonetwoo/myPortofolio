@@ -1,7 +1,8 @@
 'use client';
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import AlertBanner from "../../components/AlertBanner";
 
 const DEMO_EMAIL = "admin@example.com";
 const DEMO_PASSWORD = "admin123";
@@ -10,15 +11,22 @@ export default function AdminLoginForm() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [alert, setAlert] = useState(null);
+
+  useEffect(() => {
+    if (!alert) return undefined;
+    const timer = setTimeout(() => setAlert(null), 3000);
+    return () => clearTimeout(timer);
+  }, [alert]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (email === DEMO_EMAIL && password === DEMO_PASSWORD) {
       document.cookie = "admin-auth=true; path=/";
-      router.push("/admin/dashboard");
+      setAlert({ type: "success", message: "Login success. Redirecting to dashboard..." });
+      setTimeout(() => router.push("/admin/dashboard"), 600);
     } else {
-      setError("Invalid credentials. Use the demo admin below.");
+      setAlert({ type: "error", message: "Invalid credentials. Use the demo admin below." });
     }
   };
 
@@ -27,6 +35,7 @@ export default function AdminLoginForm() {
       className="mx-auto max-w-lg space-y-6 rounded-2xl border p-8 shadow-sm"
       style={{ background: "var(--card)", borderColor: "var(--border)" }}
     >
+      <AlertBanner alert={alert} onClose={() => setAlert(null)} />
       <div className="space-y-2">
         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-accent">Admin</p>
         <h1 className="text-2xl font-display font-semibold text-ink">Sign in to manage portfolio</h1>
@@ -49,11 +58,10 @@ export default function AdminLoginForm() {
             type="password"
             className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none focus:border-accent focus:ring-1 focus:ring-accent"
             placeholder="••••••••"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        {error && <p className="text-sm font-semibold text-ember">{error}</p>}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </div>
         <button
           type="submit"
           className="w-full rounded-full bg-ink px-4 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:shadow-lg"

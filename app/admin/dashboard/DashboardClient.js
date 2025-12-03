@@ -1,20 +1,31 @@
 'use client';
 
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import SectionHeader from "../../../components/SectionHeader";
 import AdminTable from "../../../components/AdminTable";
+import AlertBanner from "../../../components/AlertBanner";
 import { portfolioItems } from "../../../data/portfolio";
 
 export default function DashboardClient() {
   const router = useRouter();
+  const [alert, setAlert] = useState(null);
+
+  useEffect(() => {
+    if (!alert) return undefined;
+    const timer = setTimeout(() => setAlert(null), 2500);
+    return () => clearTimeout(timer);
+  }, [alert]);
 
   const handleLogout = () => {
     document.cookie = "admin-auth=; Max-Age=0; path=/";
-    router.push("/admin");
+    setAlert({ type: "info", message: "Logged out. Redirecting to login..." });
+    setTimeout(() => router.push("/admin"), 800);
   };
 
   return (
     <div className="space-y-8">
+      <AlertBanner alert={alert} onClose={() => setAlert(null)} />
       <SectionHeader
         eyebrow="Dashboard"
         title="Portfolio admin"

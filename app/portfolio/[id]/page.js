@@ -32,17 +32,25 @@ export default function PortfolioDetail({ params }) {
         <div className="lg:col-span-2">
           <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
             <div className="grid gap-4 p-4 sm:grid-cols-2">
-              {item.images.map((src, idx) => (
-                <div key={idx} className="relative aspect-[4/3] overflow-hidden rounded-xl bg-slate-100">
-                  <Image
-                    src={`${src}?auto=format&fit=crop&w=1200&q=80`}
-                    alt={`${item.title} visual ${idx + 1}`}
-                    fill
-                    sizes="(min-width: 1024px) 50vw, 100vw"
-                    className="object-cover"
-                  />
-                </div>
-              ))}
+              {item.images.map((src, idx) => {
+                const isData = src.startsWith("data:");
+                const finalSrc = isData ? src : `${src}?auto=format&fit=crop&w=1200&q=80`;
+                return (
+                  <div key={idx} className="relative aspect-[4/3] overflow-hidden rounded-xl bg-slate-100">
+                    {isData ? (
+                      <img src={finalSrc} alt={`${item.title} visual ${idx + 1}`} className="h-full w-full object-cover" />
+                    ) : (
+                      <Image
+                        src={finalSrc}
+                        alt={`${item.title} visual ${idx + 1}`}
+                        fill
+                        sizes="(min-width: 1024px) 50vw, 100vw"
+                        className="object-cover"
+                      />
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>

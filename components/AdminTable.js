@@ -2,24 +2,37 @@
 
 import { useMemo, useState } from "react";
 import Badge from "./Badge";
+import AlertBanner from "./AlertBanner";
 
 const defaultNewItem = {
   title: "",
   type: "Website",
   image: "",
   link: "",
-  description: ""
+  description: "",
+  images: []
 };
 
 export default function AdminTable({ initialData }) {
   const [items, setItems] = useState(initialData);
   const [draft, setDraft] = useState(defaultNewItem);
+  const [imageUrl, setImageUrl] = useState("");
+  const [alert, setAlert] = useState(null);
+  const [editingId, setEditingId] = useState(null);
+  const [editDraft, setEditDraft] = useState(null);
+  const [editImageUrl, setEditImageUrl] = useState("");
+
   const totalByType = useMemo(() => {
     return items.reduce(
       (acc, item) => ({ ...acc, [item.type]: (acc[item.type] || 0) + 1 }),
       {}
     );
   }, [items]);
+
+  const showAlert = (message, type = "info") => {
+    setAlert({ message, type });
+    setTimeout(() => setAlert(null), 2500);
+  };
 
   const addItem = () => {
     if (!draft.title || !draft.type) return;
@@ -28,20 +41,98 @@ export default function AdminTable({ initialData }) {
       id,
       title: draft.title,
       type: draft.type,
-      images: [draft.image || "https://images.unsplash.com/photo-1498050108023-c5249f4df085"],
+      images: draft.images.length
+        ? draft.images
+        : [draft.image || "https://images.unsplash.com/photo-1498050108023-c5249f4df085"],
       links: { website: draft.link, github: "", video: "" },
       description: draft.description || "Quick draft description for a new case study."
     };
     setItems([nextItem, ...items]);
     setDraft(defaultNewItem);
+    setImageUrl("");
+    showAlert("Portfolio added", "success");
   };
 
   const removeItem = (id) => {
     setItems(items.filter((item) => item.id !== id));
+    showAlert("Portfolio removed", "warning");
+  };
+
+  const startEdit = (item) => {
+    setEditingId(item.id);
+    setEditDraft({
+      ...item,
+      link: item.links.website || item.links.video || "",
+      images: item.images || []
+    });
+    setEditImageUrl("");
+  };
+
+  const saveEdit = () => {
+    if (!editingId || !editDraft) return;
+    const updated = {
+      ...editDraft,
+      links: { website: editDraft.link, video: "", github: "" }
+    };
+    setItems(items.map((it) => (it.id === editingId ? updated : it)));
+    setEditingId(null);
+    setEditDraft(null);
+    showAlert("Portfolio updated", "success");
+  };
+
+  const cancelEdit = () => {
+    setEditingId(null);
+    setEditDraft(null);
+    setEditImageUrl("");
+  };
+
+  const addImageFromUrl = () => {
+    if (!imageUrl.trim()) return;
+    setDraft({ ...draft, images: [...draft.images, imageUrl.trim()] });
+    setImageUrl("");
+  };
+
+  const addEditImageFromUrl = () => {
+    if (!editImageUrl.trim()) return;
+    setEditDraft({ ...editDraft, images: [...(editDraft?.images || []), editImageUrl.trim()] });
+    setEditImageUrl("");
+  };
+
+  const handleFiles = async (files, mode = "draft") => {
+    const toBase64 = (file) =>
+      new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.readAsDataURL(file);
+      });
+    const images = await Promise.all(Array.from(files).map(toBase64));
+    if (mode === "draft") {
+      setDraft((prev) => ({ ...prev, images: [...prev.images, ...images] }));
+    } else {
+      setEditDraft((prev) => ({ ...prev, images: [...(prev?.images || []), ...images] }));
+    }
+  };
+
+  const handleDrop = (e, mode = "draft") => {
+    e.preventDefault();
+    const files = e.dataTransfer.files;
+    if (files?.length) {
+      handleFiles(files, mode);
+      showAlert(mode === "draft" ? "Images added to new item" : "Images added to edit", "info");
+    }
+  };
+
+  const removeDraftImage = (idx, mode = "draft") => {
+    if (mode === "draft") {
+      setDraft({ ...draft, images: draft.images.filter((_, i) => i !== idx) });
+    } else if (editDraft) {
+      setEditDraft({ ...editDraft, images: editDraft.images.filter((_, i) => i !== idx) });
+    }
   };
 
   return (
     <div className="space-y-6">
+      <AlertBanner alert={alert} onClose={() => setAlert(null)} />
       <div
         className="grid gap-4 rounded-2xl border p-5 shadow-sm sm:grid-cols-4"
         style={{ background: "var(--card)", borderColor: "var(--border)" }}
@@ -108,6 +199,47 @@ export default function AdminTable({ initialData }) {
             style={{ borderColor: "var(--border)", color: "var(--foreground)", background: "var(--card)" }}
           />
         </div>
+        <div className="mt-3 grid gap-3 lg:grid-cols-3">
+          <div
+            className="rounded-xl border border-dashed p-4 text-sm"
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => handleDrop(e, "draft")}
+            style={{ borderColor: "var(--border)" }}
+          >
+            Drag & drop images here
+          </div>
+          <div className="flex items-center gap-2">
+            <input
+              value={imageUrl}
+              onChange={(e) => setImageUrl(e.target.value)}
+              placeholder="Image URL"
+              className="w-full rounded-xl border px-3 py-2 text-sm outline-none focus:border-accent focus:ring-1 focus:ring-accent"
+              style={{ borderColor: "var(--border)", color: "var(--foreground)", background: "var(--card)" }}
+            />
+            <button
+              type="button"
+              onClick={addImageFromUrl}
+              className="rounded-full px-4 py-2 text-sm font-semibold transition"
+              style={{ background: "var(--primary)", color: "var(--primary-foreground)" }}
+            >
+              Add image
+            </button>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {draft.images.map((src, idx) => (
+              <div
+                key={idx}
+                className="flex items-center gap-1 rounded-lg border px-2 py-1 text-xs"
+                style={{ borderColor: "var(--border)" }}
+              >
+                <span className="max-w-[120px] truncate">{src.startsWith("data:") ? "upload" : src}</span>
+                <button onClick={() => removeDraftImage(idx)} className="text-ember">
+                  ✕
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
         <div className="mt-3 flex justify-end">
           <button
             onClick={addItem}
@@ -141,30 +273,138 @@ export default function AdminTable({ initialData }) {
             style={{ borderColor: "var(--border)" }}
           >
             <span className="truncate text-[color:var(--muted-foreground)]">{item.id}</span>
-            <span className="font-semibold text-[color:var(--foreground)]">{item.title}</span>
-            <Badge tone="neutral">{item.type}</Badge>
-            <a href={item.links.website || item.links.video || "#"} className="truncate text-accent hover:underline">
-              {item.links.website || item.links.video || "—"}
-            </a>
-            <span className="line-clamp-2 text-[color:var(--muted-foreground)]">{item.description}</span>
-            <div className="flex gap-2">
-              <button
-                onClick={() => removeItem(item.id)}
-                className="rounded-full border px-3 py-1 text-xs font-semibold transition"
-                style={{ borderColor: "var(--border)", color: "var(--muted-foreground)", background: "var(--card)" }}
-              >
-                Remove
-              </button>
-              <a
-                href={`/portfolio/${item.id}`}
-                className="rounded-full px-3 py-1 text-xs font-semibold transition hover:-translate-y-0.5"
-                style={{ background: "var(--primary)", color: "var(--primary-foreground)" }}
-              >
-                View
-              </a>
-            </div>
+            {editingId === item.id ? (
+              <>
+                <input
+                  value={editDraft?.title || ""}
+                  onChange={(e) => setEditDraft({ ...editDraft, title: e.target.value })}
+                  className="rounded-lg border px-2 py-1 text-sm"
+                  style={{ borderColor: "var(--border)", color: "var(--foreground)", background: "var(--card)" }}
+                />
+                <select
+                  value={editDraft?.type || "Website"}
+                  onChange={(e) => setEditDraft({ ...editDraft, type: e.target.value })}
+                  className="rounded-lg border px-2 py-1 text-sm"
+                  style={{ borderColor: "var(--border)", color: "var(--foreground)", background: "var(--card)" }}
+                >
+                  <option>cinematography</option>
+                  <option>Graphic Design</option>
+                  <option>Website</option>
+                </select>
+                <input
+                  value={editDraft?.link || ""}
+                  onChange={(e) => setEditDraft({ ...editDraft, link: e.target.value })}
+                  className="rounded-lg border px-2 py-1 text-sm"
+                  style={{ borderColor: "var(--border)", color: "var(--foreground)", background: "var(--card)" }}
+                />
+                <textarea
+                  value={editDraft?.description || ""}
+                  onChange={(e) => setEditDraft({ ...editDraft, description: e.target.value })}
+                  className="rounded-lg border px-2 py-1 text-sm"
+                  rows={2}
+                  style={{ borderColor: "var(--border)", color: "var(--foreground)", background: "var(--card)" }}
+                />
+                <div className="flex gap-2">
+                  <button
+                    onClick={saveEdit}
+                    className="rounded-full px-3 py-1 text-xs font-semibold transition"
+                    style={{ background: "var(--primary)", color: "var(--primary-foreground)" }}
+                  >
+                    Save
+                  </button>
+                  <button
+                    onClick={cancelEdit}
+                    className="rounded-full border px-3 py-1 text-xs font-semibold transition"
+                    style={{ borderColor: "var(--border)", color: "var(--muted-foreground)", background: "var(--card)" }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <span className="font-semibold text-[color:var(--foreground)]">{item.title}</span>
+                <Badge tone="neutral">{item.type}</Badge>
+                <a href={item.links.website || item.links.video || "#"} className="truncate text-accent hover:underline">
+                  {item.links.website || item.links.video || "—"}
+                </a>
+                <span className="line-clamp-2 text-[color:var(--muted-foreground)]">{item.description}</span>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => removeItem(item.id)}
+                    className="rounded-full border px-3 py-1 text-xs font-semibold transition"
+                    style={{ borderColor: "var(--border)", color: "var(--muted-foreground)", background: "var(--card)" }}
+                  >
+                    Remove
+                  </button>
+                  <button
+                    onClick={() => startEdit(item)}
+                    className="rounded-full border px-3 py-1 text-xs font-semibold transition"
+                    style={{ borderColor: "var(--border)", color: "var(--foreground)", background: "var(--card)" }}
+                  >
+                    Edit
+                  </button>
+                  <a
+                    href={`/portfolio/${item.id}`}
+                    className="rounded-full px-3 py-1 text-xs font-semibold transition hover:-translate-y-0.5"
+                    style={{ background: "var(--primary)", color: "var(--primary-foreground)" }}
+                  >
+                    View
+                  </a>
+                </div>
+              </>
+            )}
           </div>
         ))}
+        {editingId && editDraft && (
+          <div
+            className="border-t px-4 py-3 text-sm"
+            style={{ borderColor: "var(--border)", background: "var(--card)" }}
+          >
+            <p className="text-xs font-semibold text-[color:var(--muted-foreground)]">Editing images</p>
+            <div className="mt-2 grid gap-2 lg:grid-cols-3">
+              <div
+                className="rounded-xl border border-dashed p-4 text-sm"
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={(e) => handleDrop(e, "edit")}
+                style={{ borderColor: "var(--border)" }}
+              >
+                Drag & drop images here
+              </div>
+              <div className="flex items-center gap-2">
+                <input
+                  value={editImageUrl}
+                  onChange={(e) => setEditImageUrl(e.target.value)}
+                  placeholder="Image URL"
+                  className="w-full rounded-xl border px-3 py-2 text-sm outline-none focus:border-accent focus:ring-1 focus:ring-accent"
+                  style={{ borderColor: "var(--border)", color: "var(--foreground)", background: "var(--card)" }}
+                />
+                <button
+                  type="button"
+                  onClick={addEditImageFromUrl}
+                  className="rounded-full px-4 py-2 text-sm font-semibold transition"
+                  style={{ background: "var(--primary)", color: "var(--primary-foreground)" }}
+                >
+                  Add image
+                </button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {editDraft.images?.map((src, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center gap-1 rounded-lg border px-2 py-1 text-xs"
+                    style={{ borderColor: "var(--border)" }}
+                  >
+                    <span className="max-w-[120px] truncate">{src.startsWith("data:") ? "upload" : src}</span>
+                    <button onClick={() => removeDraftImage(idx, "edit")} className="text-ember">
+                      ✕
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
