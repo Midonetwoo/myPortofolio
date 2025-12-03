@@ -4,10 +4,14 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { gsap } from "gsap";
 
 const useMedia = (queries, values, defaultValue) => {
-  const get = () => values[queries.findIndex((q) => matchMedia(q).matches)] ?? defaultValue;
+  const get = () => {
+    if (typeof window === "undefined" || typeof window.matchMedia === "undefined") return defaultValue;
+    return values[queries.findIndex((q) => matchMedia(q).matches)] ?? defaultValue;
+  };
   const [value, setValue] = useState(get);
 
   useEffect(() => {
+    if (typeof window === "undefined" || typeof window.matchMedia === "undefined") return;
     const handler = () => setValue(get);
     queries.forEach((q) => matchMedia(q).addEventListener("change", handler));
     return () => queries.forEach((q) => matchMedia(q).removeEventListener("change", handler));
