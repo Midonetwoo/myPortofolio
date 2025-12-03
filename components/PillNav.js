@@ -165,12 +165,10 @@ export default function PillNav({
                         {item.label}
                       </span>
                     </span>
-                    {isActive && (
-                      <span
-                        className="absolute left-1/2 -bottom-[6px] h-2 w-2 -translate-x-1/2 rounded-full"
-                        style={{ background: "var(--base, #000)" }}
-                      />
-                    )}
+                    <span
+                      className="absolute left-1/2 -bottom-[6px] h-2 w-2 -translate-x-1/2 rounded-full transition-opacity duration-200"
+                      style={{ background: "var(--base, #000)", opacity: isActive ? 1 : 0 }}
+                    />
                   </Link>
                 </li>
               );
