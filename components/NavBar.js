@@ -32,7 +32,7 @@ export default function NavBar() {
 
   return (
     <header className="sticky top-0 z-30 bg-[color:var(--background)]/90 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-2 sm:px-8 md:px-10">
+      <div className="mx-auto flex max-w-6xl items-center justify-center gap-3 px-4 py-2 sm:px-8 md:px-10">
         <PillNav
           items={links}
           activeHref={pathname}
@@ -40,7 +40,6 @@ export default function NavBar() {
           pillColor="var(--card)"
           hoveredPillTextColor="var(--primary-foreground)"
           pillTextColor="var(--foreground)"
-          logoText="MP"
           className="w-full"
           initialLoadAnimation={true}
         />

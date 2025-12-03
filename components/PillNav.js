@@ -13,8 +13,6 @@ const isExternalLink = (href) =>
   href?.startsWith("#");
 
 export default function PillNav({
-  logo,
-  logoAlt = "Logo",
   items,
   activeHref,
   className = "",
@@ -31,12 +29,8 @@ export default function PillNav({
   const circleRefs = useRef([]);
   const tlRefs = useRef([]);
   const activeTweenRefs = useRef([]);
-  const logoImgRef = useRef(null);
-  const logoTweenRef = useRef(null);
-  const hamburgerRef = useRef(null);
   const mobileMenuRef = useRef(null);
   const navItemsRef = useRef(null);
-  const logoRef = useRef(null);
 
   useEffect(() => {
     const layout = () => {
@@ -102,27 +96,13 @@ export default function PillNav({
       gsap.set(menu, { visibility: "hidden", opacity: 0, scaleY: 1, y: 0 });
     }
 
-    if (initialLoadAnimation) {
-      const logo = logoRef.current;
-      const navItems = navItemsRef.current;
-
-      if (logo) {
-        gsap.set(logo, { scale: 0 });
-        gsap.to(logo, {
-          scale: 1,
-          duration: 0.6,
-          ease
-        });
-      }
-
-      if (navItems) {
-        gsap.set(navItems, { width: 0, overflow: "hidden" });
-        gsap.to(navItems, {
-          width: "auto",
-          duration: 0.6,
-          ease
-        });
-      }
+    if (initialLoadAnimation && navItemsRef.current) {
+      gsap.set(navItemsRef.current, { width: 0, overflow: "hidden" });
+      gsap.to(navItemsRef.current, {
+        width: "auto",
+        duration: 0.6,
+        ease
+      });
     }
 
     return () => window.removeEventListener("resize", onResize);
@@ -150,51 +130,17 @@ export default function PillNav({
     });
   };
 
-  const handleLogoEnter = () => {
-    const img = logoImgRef.current;
-    if (!img) return;
-    logoTweenRef.current?.kill();
-    gsap.set(img, { rotate: 0 });
-    logoTweenRef.current = gsap.to(img, {
-      rotate: 360,
-      duration: 0.2,
-      ease,
-      overwrite: "auto"
-    });
-  };
-
   const toggleMobileMenu = () => {
     const newState = !isMobileMenuOpen;
     setIsMobileMenuOpen(newState);
-
-    const hamburger = hamburgerRef.current;
     const menu = mobileMenuRef.current;
-
-    if (hamburger) {
-      const lines = hamburger.querySelectorAll(".hamburger-line");
-      if (newState) {
-        gsap.to(lines[0], { rotation: 45, y: 3, duration: 0.3, ease });
-        gsap.to(lines[1], { rotation: -45, y: -3, duration: 0.3, ease });
-      } else {
-        gsap.to(lines[0], { rotation: 0, y: 0, duration: 0.3, ease });
-        gsap.to(lines[1], { rotation: 0, y: 0, duration: 0.3, ease });
-      }
-    }
-
     if (menu) {
       if (newState) {
         gsap.set(menu, { visibility: "visible" });
         gsap.fromTo(
           menu,
           { opacity: 0, y: 10, scaleY: 1 },
-          {
-            opacity: 1,
-            y: 0,
-            scaleY: 1,
-            duration: 0.3,
-            ease,
-            transformOrigin: "top center"
-          }
+          { opacity: 1, y: 0, scaleY: 1, duration: 0.3, ease, transformOrigin: "top center" }
         );
       } else {
         gsap.to(menu, {
@@ -210,7 +156,6 @@ export default function PillNav({
         });
       }
     }
-
     onMobileMenuClick?.();
   };
 
@@ -220,47 +165,17 @@ export default function PillNav({
     ["--hover-text"]: hoveredPillTextColor,
     ["--pill-text"]: resolvedPillTextColor,
     ["--nav-h"]: "42px",
-    ["--logo"]: "36px",
     ["--pill-pad-x"]: "18px",
     ["--pill-gap"]: "3px"
   };
 
   return (
-    <div className={`absolute left-0 top-[1em] z-[1000] w-full md:left-auto md:w-auto ${className}`}>
-      <nav
-        className="flex w-full items-center justify-between box-border px-4 md:w-max md:justify-start md:px-0"
-        aria-label="Primary"
-        style={cssVars}
-      >
-        <Link
-          href={items?.[0]?.href || "/"}
-          aria-label="Home"
-          onMouseEnter={handleLogoEnter}
-          ref={(el) => {
-            logoRef.current = el;
-          }}
-          className="inline-flex h-[var(--nav-h)] w-[var(--nav-h)] items-center justify-center overflow-hidden rounded-full p-2"
-          style={{ background: "var(--base, #000)" }}
-        >
-          {logo ? (
-            <img src={logo} alt={logoAlt} ref={logoImgRef} className="block h-full w-full object-cover" />
-          ) : (
-            <span
-              ref={logoImgRef}
-              className="flex h-full w-full items-center justify-center rounded-full bg-[color:var(--primary)] text-[color:var(--primary-foreground)] font-display font-semibold"
-            >
-              MP
-            </span>
-          )}
-        </Link>
-
+    <div className={`w-full ${className}`}>
+      <nav className="flex w-full items-center justify-center" style={cssVars}>
         <div
           ref={navItemsRef}
-          className="relative ml-2 hidden items-center rounded-full md:flex"
-          style={{
-            height: "var(--nav-h)",
-            background: "var(--base, #000)"
-          }}
+          className="relative hidden items-center rounded-full md:flex"
+          style={{ height: "var(--nav-h)", background: "var(--base, #000)" }}
         >
           <ul role="menubar" className="m-0 flex h-full list-none items-stretch p-[3px]" style={{ gap: "var(--pill-gap)" }}>
             {items.map((item, i) => {
@@ -282,7 +197,7 @@ export default function PillNav({
                       circleRefs.current[i] = el;
                     }}
                   />
-                  <span className="label-stack relative inline-block leading-[1] z-[2]">
+                  <span className="label-stack relative z-[2] inline-block leading-[1]">
                     <span className="pill-label relative z-[2] inline-block leading-[1]" style={{ willChange: "transform" }}>
                       {item.label}
                     </span>
@@ -304,20 +219,6 @@ export default function PillNav({
               const basePillClasses =
                 "relative inline-flex h-full cursor-pointer items-center justify-center whitespace-nowrap rounded-full px-0 text-[16px] font-semibold uppercase leading-[0] tracking-[0.2px]";
 
-              const content = (
-                <Link
-                  role="menuitem"
-                  href={item.href}
-                  className={basePillClasses}
-                  style={pillStyle}
-                  aria-label={item.ariaLabel || item.label}
-                  onMouseEnter={() => handleEnter(i)}
-                  onMouseLeave={() => handleLeave(i)}
-                >
-                  {PillContent}
-                </Link>
-              );
-
               return (
                 <li key={item.href} role="none" className="flex h-full">
                   {isExternalLink(item.href) ? (
@@ -333,7 +234,17 @@ export default function PillNav({
                       {PillContent}
                     </a>
                   ) : (
-                    content
+                    <Link
+                      role="menuitem"
+                      href={item.href}
+                      className={basePillClasses}
+                      style={pillStyle}
+                      aria-label={item.ariaLabel || item.label}
+                      onMouseEnter={() => handleEnter(i)}
+                      onMouseLeave={() => handleLeave(i)}
+                    >
+                      {PillContent}
+                    </Link>
                   )}
                 </li>
               );
@@ -342,7 +253,6 @@ export default function PillNav({
         </div>
 
         <button
-          ref={hamburgerRef}
           onClick={toggleMobileMenu}
           aria-label="Toggle menu"
           aria-expanded={isMobileMenuOpen}
