@@ -6,7 +6,10 @@ import { gsap } from "gsap";
 export default function FlowingMenu({ items = [] }) {
   return (
     <div className="h-full w-full overflow-hidden">
-      <nav className="flex h-full flex-col gap-2 rounded-2xl border p-2 shadow-sm" style={{ background: "var(--card)", borderColor: "var(--border)" }}>
+      <nav
+        className="flex h-full w-full flex-col gap-2 rounded-2xl border p-2 shadow-sm"
+        style={{ background: "var(--card)", borderColor: "var(--border)" }}
+      >
         {items.map((item, idx) => (
           <MenuItem key={idx} {...item} />
         ))}
