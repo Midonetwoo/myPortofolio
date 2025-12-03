@@ -46,10 +46,13 @@ export default function NavBar() {
         <button
           type="button"
           onClick={toggleTheme}
-          className="hidden rounded-full border px-3 py-2 text-sm font-semibold text-[color:var(--foreground)] shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg md:inline-flex"
-          style={{ borderColor: "var(--border)" }}
+          aria-label="Toggle theme"
+          className="hidden h-10 w-10 items-center justify-center rounded-full border text-lg text-[color:var(--foreground)] shadow-sm transition-transform duration-300 hover:-translate-y-0.5 hover:shadow-lg md:inline-flex"
+          style={{ borderColor: "var(--border)", background: "var(--card)" }}
         >
-          {theme === "dark" ? "Light" : "Dark"}
+          <span className={`inline-block transition-transform duration-300 ${theme === "dark" ? "rotate-180" : "rotate-0"}`}>
+            {theme === "dark" ? "☀️" : "🌙"}
+          </span>
         </button>
       </div>
     </header>
