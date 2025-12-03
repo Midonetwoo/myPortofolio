@@ -42,6 +42,7 @@ export default function NavBar() {
           pillTextColor="var(--foreground)"
           logoText="MP"
           className="w-full"
+          initialLoadAnimation={true}
         />
         <button
           type="button"
@@ -49,7 +50,7 @@ export default function NavBar() {
           className="hidden rounded-full border px-3 py-2 text-sm font-semibold text-[color:var(--foreground)] shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg md:inline-flex"
           style={{ borderColor: "var(--border)" }}
         >
-          {theme === "dark" ? "☀️ Light" : "🌙 Dark"}
+          {theme === "dark" ? "Light" : "Dark"}
         </button>
       </div>
     </header>
