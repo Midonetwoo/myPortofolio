@@ -29,10 +29,13 @@ export default function NavBar() {
   };
 
   return (
-    <header className="sticky top-0 z-30 bg-mist/90 backdrop-blur dark:bg-[color:oklch(0.12_0_0)]/70">
+    <header className="sticky top-0 z-30 bg-[color:var(--background)]/90 backdrop-blur">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-8 md:px-10">
-        <Link href="/" className="flex items-center gap-2 text-lg font-display font-semibold text-ink dark:text-white">
-          <span className="flex h-9 w-9 items-center justify-center rounded-2xl bg-ink text-white dark:bg-primary">
+        <Link
+          href="/"
+          className="flex items-center gap-2 text-lg font-display font-semibold text-[color:var(--foreground)]"
+        >
+          <span className="flex h-9 w-9 items-center justify-center rounded-2xl bg-primary text-[color:var(--primary-foreground)]">
             MP
           </span>
           Midonet Portfolio
@@ -42,7 +45,7 @@ export default function NavBar() {
             <Link
               key={link.href}
               href={link.href}
-              className="rounded-full px-4 py-2 text-sm font-semibold text-ink transition hover:bg-slate-200 dark:text-white dark:hover:bg-white/10"
+              className="rounded-full px-4 py-2 text-sm font-semibold text-[color:var(--foreground)] transition hover:bg-[color:var(--muted)]"
             >
               {link.label}
             </Link>
@@ -50,7 +53,8 @@ export default function NavBar() {
           <button
             type="button"
             onClick={toggleTheme}
-            className="rounded-full border border-slate-200 px-3 py-2 text-sm font-semibold text-ink shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg dark:border-white/20 dark:text-white dark:hover:bg-white/10"
+            className="rounded-full border px-3 py-2 text-sm font-semibold text-[color:var(--foreground)] shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg"
+            style={{ borderColor: "var(--border)" }}
           >
             {theme === "dark" ? "☀️ Light" : "🌙 Dark"}
           </button>

@@ -6,5 +6,9 @@ export const metadata = {
 };
 
 export default function AdminLoginPage() {
-  return <AdminLoginForm />;
+  return (
+    <div className="rounded-2xl border shadow-sm" style={{ background: "var(--card)", borderColor: "var(--border)" }}>
+      <AdminLoginForm />
+    </div>
+  );
 }

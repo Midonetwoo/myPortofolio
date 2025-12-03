@@ -3,8 +3,8 @@ import Badge from "./Badge";
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-ink via-slate-900 to-ember/80 px-6 py-14 shadow-2xl sm:px-12 sm:py-16">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.08),transparent_35%),radial-gradient(circle_at_80%_0%,rgba(255,255,255,0.05),transparent_25%)]" />
+    <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[color:var(--primary)] via-[color:var(--chart-4)] to-[color:var(--accent)] px-6 py-14 shadow-2xl sm:px-12 sm:py-16">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.18),transparent_35%),radial-gradient(circle_at_80%_0%,rgba(255,255,255,0.15),transparent_25%)]" />
       <div className="relative grid gap-10 lg:grid-cols-2 lg:items-center">
         <div className="space-y-6">
           <Badge tone="ember">Portfolio</Badge>

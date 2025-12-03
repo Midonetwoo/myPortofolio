@@ -23,7 +23,10 @@ export default function AdminLoginForm() {
   };
 
   return (
-    <div className="mx-auto max-w-lg space-y-6 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+    <div
+      className="mx-auto max-w-lg space-y-6 rounded-2xl border p-8 shadow-sm"
+      style={{ background: "var(--card)", borderColor: "var(--border)" }}
+    >
       <div className="space-y-2">
         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-accent">Admin</p>
         <h1 className="text-2xl font-display font-semibold text-ink">Sign in to manage portfolio</h1>

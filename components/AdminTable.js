@@ -42,32 +42,44 @@ export default function AdminTable({ initialData }) {
 
   return (
     <div className="space-y-6">
-      <div className="grid gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:grid-cols-4">
+      <div
+        className="grid gap-4 rounded-2xl border p-5 shadow-sm sm:grid-cols-4"
+        style={{ background: "var(--card)", borderColor: "var(--border)" }}
+      >
         <div>
-          <p className="text-sm font-semibold text-ink">Total projects</p>
+          <p className="text-sm font-semibold text-[color:var(--foreground)]">Total projects</p>
           <p className="text-2xl font-display font-semibold">{items.length}</p>
         </div>
         {Object.entries(totalByType).map(([type, count]) => (
-          <div key={type} className="flex items-center gap-2 rounded-xl bg-slate-50 px-3 py-3">
+          <div
+            key={type}
+            className="flex items-center gap-2 rounded-xl px-3 py-3"
+            style={{ background: "var(--muted)" }}
+          >
             <Badge tone="neutral">{type}</Badge>
-            <p className="text-xl font-semibold text-ink">{count}</p>
+            <p className="text-xl font-semibold text-[color:var(--foreground)]">{count}</p>
           </div>
         ))}
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-        <p className="text-sm font-semibold text-ink">Add a new portfolio item</p>
+      <div
+        className="rounded-2xl border p-5 shadow-sm"
+        style={{ background: "var(--card)", borderColor: "var(--border)" }}
+      >
+        <p className="text-sm font-semibold text-[color:var(--foreground)]">Add a new portfolio item</p>
         <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           <input
             value={draft.title}
             onChange={(e) => setDraft({ ...draft, title: e.target.value })}
             placeholder="Title"
-            className="rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none focus:border-accent focus:ring-1 focus:ring-accent"
+            className="rounded-xl border px-3 py-2 text-sm outline-none focus:border-accent focus:ring-1 focus:ring-accent"
+            style={{ borderColor: "var(--border)", color: "var(--foreground)", background: "var(--card)" }}
           />
           <select
             value={draft.type}
             onChange={(e) => setDraft({ ...draft, type: e.target.value })}
-            className="rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none focus:border-accent focus:ring-1 focus:ring-accent"
+            className="rounded-xl border px-3 py-2 text-sm outline-none focus:border-accent focus:ring-1 focus:ring-accent"
+            style={{ borderColor: "var(--border)", color: "var(--foreground)", background: "var(--card)" }}
           >
             <option>cinematography</option>
             <option>Graphic Design</option>
@@ -77,34 +89,44 @@ export default function AdminTable({ initialData }) {
             value={draft.image}
             onChange={(e) => setDraft({ ...draft, image: e.target.value })}
             placeholder="Hero image URL"
-            className="rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none focus:border-accent focus:ring-1 focus:ring-accent"
+            className="rounded-xl border px-3 py-2 text-sm outline-none focus:border-accent focus:ring-1 focus:ring-accent"
+            style={{ borderColor: "var(--border)", color: "var(--foreground)", background: "var(--card)" }}
           />
           <input
             value={draft.link}
             onChange={(e) => setDraft({ ...draft, link: e.target.value })}
             placeholder="Website or video link"
-            className="rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none focus:border-accent focus:ring-1 focus:ring-accent"
+            className="rounded-xl border px-3 py-2 text-sm outline-none focus:border-accent focus:ring-1 focus:ring-accent"
+            style={{ borderColor: "var(--border)", color: "var(--foreground)", background: "var(--card)" }}
           />
           <textarea
             value={draft.description}
             onChange={(e) => setDraft({ ...draft, description: e.target.value })}
             placeholder="Short description"
-            className="rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none focus:border-accent focus:ring-1 focus:ring-accent sm:col-span-2 lg:col-span-3"
+            className="rounded-xl border px-3 py-2 text-sm outline-none focus:border-accent focus:ring-1 focus:ring-accent sm:col-span-2 lg:col-span-3"
             rows={2}
+            style={{ borderColor: "var(--border)", color: "var(--foreground)", background: "var(--card)" }}
           />
         </div>
         <div className="mt-3 flex justify-end">
           <button
             onClick={addItem}
-            className="rounded-full bg-ink px-4 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:shadow-lg"
+            className="rounded-full px-4 py-2 text-sm font-semibold transition hover:-translate-y-0.5 hover:shadow-lg"
+            style={{ background: "var(--primary)", color: "var(--primary-foreground)" }}
           >
             Add portfolio
           </button>
         </div>
       </div>
 
-      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <div className="grid grid-cols-6 items-center gap-3 bg-slate-50 px-4 py-3 text-xs font-semibold uppercase tracking-wide text-slate-600">
+      <div
+        className="overflow-hidden rounded-2xl border shadow-sm"
+        style={{ background: "var(--card)", borderColor: "var(--border)" }}
+      >
+        <div
+          className="grid grid-cols-6 items-center gap-3 px-4 py-3 text-xs font-semibold uppercase tracking-wide"
+          style={{ background: "var(--muted)", color: "var(--muted-foreground)" }}
+        >
           <span>ID</span>
           <span>Title</span>
           <span>Type</span>
@@ -113,24 +135,30 @@ export default function AdminTable({ initialData }) {
           <span>Actions</span>
         </div>
         {items.map((item) => (
-          <div key={item.id} className="grid grid-cols-6 items-center gap-3 border-t border-slate-100 px-4 py-3 text-sm">
-            <span className="truncate text-slate-500">{item.id}</span>
-            <span className="font-semibold text-ink">{item.title}</span>
+          <div
+            key={item.id}
+            className="grid grid-cols-6 items-center gap-3 border-t px-4 py-3 text-sm"
+            style={{ borderColor: "var(--border)" }}
+          >
+            <span className="truncate text-[color:var(--muted-foreground)]">{item.id}</span>
+            <span className="font-semibold text-[color:var(--foreground)]">{item.title}</span>
             <Badge tone="neutral">{item.type}</Badge>
             <a href={item.links.website || item.links.video || "#"} className="truncate text-accent hover:underline">
               {item.links.website || item.links.video || "—"}
             </a>
-            <span className="line-clamp-2 text-slate-600">{item.description}</span>
+            <span className="line-clamp-2 text-[color:var(--muted-foreground)]">{item.description}</span>
             <div className="flex gap-2">
               <button
                 onClick={() => removeItem(item.id)}
-                className="rounded-full border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-600 transition hover:bg-slate-100"
+                className="rounded-full border px-3 py-1 text-xs font-semibold transition"
+                style={{ borderColor: "var(--border)", color: "var(--muted-foreground)", background: "var(--card)" }}
               >
                 Remove
               </button>
               <a
                 href={`/portfolio/${item.id}`}
-                className="rounded-full bg-ink px-3 py-1 text-xs font-semibold text-white transition hover:-translate-y-0.5"
+                className="rounded-full px-3 py-1 text-xs font-semibold transition hover:-translate-y-0.5"
+                style={{ background: "var(--primary)", color: "var(--primary-foreground)" }}
               >
                 View
               </a>

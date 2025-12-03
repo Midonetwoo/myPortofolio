@@ -26,27 +26,28 @@ export default function HomePage() {
           {
             title: "Cinematography",
             text: "Short films, music videos, and kinetic sequences designed for both stage and screen.",
-            accent: "bg-gradient-to-br from-indigo-500 to-blue-500"
+            accent: "bg-gradient-to-br from-[color:var(--primary)] to-[color:var(--chart-4)]"
           },
           {
             title: "Graphic Design",
             text: "Identity systems, poster series, and layouts that carry strong typography and motion.",
-            accent: "bg-gradient-to-br from-amber-500 to-rose-500"
+            accent: "bg-gradient-to-br from-[color:var(--accent)] to-[color:var(--chart-5)]"
           },
           {
             title: "Web Experience",
             text: "Fast, responsive sites with story-driven case studies and purposeful interactions.",
-            accent: "bg-gradient-to-br from-emerald-500 to-teal-500"
+            accent: "bg-gradient-to-br from-[color:var(--secondary)] to-[color:var(--chart-2)]"
           }
         ].map((item) => (
           <div
             key={item.title}
-            className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+            className="overflow-hidden rounded-2xl border shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+            style={{ background: "var(--card)", borderColor: "var(--border)" }}
           >
             <div className={`h-24 ${item.accent}`} />
             <div className="space-y-2 p-5">
-              <h3 className="text-lg font-semibold text-ink">{item.title}</h3>
-              <p className="text-sm text-slate-600">{item.text}</p>
+              <h3 className="text-lg font-semibold text-[color:var(--foreground)]">{item.title}</h3>
+              <p className="text-sm text-[color:var(--muted-foreground)]">{item.text}</p>
             </div>
           </div>
         ))}

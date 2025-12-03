@@ -181,3 +181,22 @@ body {
 * {
   scroll-behavior: smooth;
 }
+
+.surface-card {
+  background: var(--card);
+  color: var(--foreground);
+  border-color: var(--border);
+}
+
+.muted {
+  color: var(--muted-foreground);
+}
+
+.primary {
+  color: var(--primary);
+}
+
+.bg-primary {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
