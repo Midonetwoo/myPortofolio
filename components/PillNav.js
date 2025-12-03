@@ -13,7 +13,8 @@ export default function PillNav({
   baseColor = "#0b1021",
   pillColor = "#ffffff",
   hoveredPillTextColor = "#ffffff",
-  pillTextColor
+  pillTextColor,
+  initialLoadAnimation = true
 }) {
   const resolvedPillTextColor = pillTextColor ?? baseColor;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -21,6 +22,7 @@ export default function PillNav({
   const tlRefs = useRef([]);
   const activeTweenRefs = useRef([]);
   const navItemsRef = useRef(null);
+  const logoRef = useRef(null);
 
   useEffect(() => {
     const layout = () => {
@@ -74,8 +76,20 @@ export default function PillNav({
     layout();
     const onResize = () => layout();
     window.addEventListener("resize", onResize);
+    if (initialLoadAnimation) {
+      const logo = logoRef.current;
+      const navItems = navItemsRef.current;
+      if (logo) {
+        gsap.set(logo, { scale: 0 });
+        gsap.to(logo, { scale: 1, duration: 0.6, ease });
+      }
+      if (navItems) {
+        gsap.set(navItems, { width: 0, overflow: "hidden" });
+        gsap.to(navItems, { width: "auto", duration: 0.6, ease });
+      }
+    }
     return () => window.removeEventListener("resize", onResize);
-  }, [items, ease]);
+  }, [items, ease, initialLoadAnimation]);
 
   const handleEnter = (i) => {
     const tl = tlRefs.current[i];
@@ -101,7 +115,11 @@ export default function PillNav({
   return (
     <div className={`relative w-full ${className}`} style={cssVars}>
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-8 md:px-10">
-        <Link href="/" className="flex items-center gap-2 text-lg font-display font-semibold text-[color:var(--foreground)]">
+        <Link
+          href="/"
+          ref={logoRef}
+          className="flex items-center gap-2 text-lg font-display font-semibold text-[color:var(--foreground)]"
+        >
           <span className="flex h-9 w-9 items-center justify-center rounded-2xl bg-[color:var(--primary)] text-[color:var(--primary-foreground)]">
             {logoText}
           </span>
