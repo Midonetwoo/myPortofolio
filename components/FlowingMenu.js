@@ -7,7 +7,7 @@ export default function FlowingMenu({ items = [] }) {
   return (
     <div className="h-full w-full overflow-hidden">
       <nav
-        className="flex h-full w-full flex-col gap-2 rounded-2xl border p-2 shadow-sm"
+        className="flex h-full w-full min-h-[320px] flex-col gap-2 rounded-2xl border p-2 shadow-sm"
         style={{ background: "var(--card)", borderColor: "var(--border)" }}
       >
         {items.map((item, idx) => (
@@ -56,18 +56,15 @@ function MenuItem({ link, text, image, onClick }) {
 
   const repeatedMarqueeContent = Array.from({ length: 4 }).map((_, idx) => (
     <React.Fragment key={idx}>
-      <span className="p-[1vh_1vw_0] text-[4vh] uppercase leading-[1.2] text-[color:var(--foreground)]">{text}</span>
-      <div
-        className="my-[2em] mx-[2vw] h-[7vh] w-[200px] rounded-[50px] bg-cover bg-center p-[1em_0]"
-        style={{ backgroundImage: `url(${image})` }}
-      />
+      <span className="px-2 text-lg uppercase leading-[1.2] text-[color:var(--foreground)]">{text}</span>
+      <div className="mx-[2vw] my-4 h-[64px] w-[200px] rounded-[50px] bg-cover bg-center" style={{ backgroundImage: `url(${image})` }} />
     </React.Fragment>
   ));
 
   return (
     <div className="relative flex-1 overflow-hidden rounded-xl border" style={{ borderColor: "var(--border)" }} ref={itemRef}>
       <a
-        className="flex h-full items-center justify-center cursor-pointer text-center text-[4vh] font-semibold uppercase text-[color:var(--foreground)] no-underline transition hover:text-[color:var(--background)]"
+        className="flex h-full items-center justify-center cursor-pointer text-center text-xl font-semibold uppercase text-[color:var(--foreground)] no-underline transition hover:text-[color:var(--background)]"
         href={link}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -78,10 +75,7 @@ function MenuItem({ link, text, image, onClick }) {
       >
         {text}
       </a>
-      <div
-        className="translate-y-[101%] absolute left-0 top-0 h-full w-full overflow-hidden bg-[color:var(--card)] pointer-events-none"
-        ref={marqueeRef}
-      >
+      <div className="translate-y-[101%] absolute left-0 top-0 h-full w-full overflow-hidden bg-[color:var(--card)] pointer-events-none" ref={marqueeRef}>
         <div className="flex h-full w-[200%]" ref={marqueeInnerRef}>
           <div className="animate-marquee flex h-full w-[200%] items-center">
             {repeatedMarqueeContent}
