@@ -36,7 +36,7 @@ export default function NavBar() {
         <PillNav
           items={links}
           activeHref={pathname}
-          baseColor="var(--foreground)"
+          baseColor="var(--accent-foreground)"
           pillColor="var(--card)"
           hoveredPillTextColor="var(--primary-foreground)"
           pillTextColor="var(--foreground)"
@@ -51,7 +51,7 @@ export default function NavBar() {
           style={{ borderColor: "var(--border)", background: "var(--card)" }}
         >
           <span className={`inline-block transition-transform duration-300 ${theme === "dark" ? "rotate-180" : "rotate-0"}`}>
-            {theme === "dark" ? "☀️" : "🌙"}
+            {theme === "dark" ? "N" : "D"}
           </span>
         </button>
       </div>
