@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import FlowingMenu from "./FlowingMenu";
 import PortfolioGrid from "./PortfolioGrid";
 
@@ -43,7 +44,17 @@ export default function HomeCategorySection({ items }) {
             {active} <span className="text-sm text-[color:var(--muted-foreground)]">({filtered.length})</span>
           </h3>
         </div>
-        <PortfolioGrid items={filtered} />
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={active}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+          >
+            <PortfolioGrid items={filtered} />
+          </motion.div>
+        </AnimatePresence>
       </div>
     </section>
   );
