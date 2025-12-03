@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import AlertBanner from "./AlertBanner";
 import Badge from "./Badge";
 
@@ -21,6 +21,26 @@ export default function AdminTable({ initialData }) {
   const [editingId, setEditingId] = useState(null);
   const [editDraft, setEditDraft] = useState(null);
   const [editImageUrl, setEditImageUrl] = useState("");
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const saved = window.localStorage.getItem("portfolio-data");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length) {
+          setItems(parsed);
+        }
+      } catch (_) {
+        // ignore parse errors
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem("portfolio-data", JSON.stringify(items));
+  }, [items]);
 
   const totalByType = useMemo(
     () => items.reduce((acc, item) => ({ ...acc, [item.type]: (acc[item.type] || 0) + 1 }), {}),
