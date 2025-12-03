@@ -10,4 +10,4 @@ Next.js portfolio starter featuring:
 2. Start dev server: `npm run dev`
 3. Visit `http://localhost:3000`
 
-Tailwind is configured in `tailwind.config.js`, sample data lives in `data/portfolio.js`, and dashboard UI uses local state only—swap in your API or CMS to persist changes.
+Tailwind is configured in `tailwind.config.js`. Portfolio data is persisted to `data/portfolio-store.json` via `/api/portfolio` (file-based store for local dev). Initial seed lives in `data/portfolio.js`. Admin dashboard uses these API endpoints for add/edit/delete.

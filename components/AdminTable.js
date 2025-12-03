@@ -14,33 +14,21 @@ const defaultNewItem = {
 };
 
 export default function AdminTable({ initialData }) {
-  const [items, setItems] = useState(initialData);
+  const [items, setItems] = useState(initialData || []);
   const [draft, setDraft] = useState(defaultNewItem);
   const [imageUrl, setImageUrl] = useState("");
   const [alert, setAlert] = useState(null);
   const [editingId, setEditingId] = useState(null);
   const [editDraft, setEditDraft] = useState(null);
   const [editImageUrl, setEditImageUrl] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    const saved = window.localStorage.getItem("portfolio-data");
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length) {
-          setItems(parsed);
-        }
-      } catch (_) {
-        // ignore parse errors
-      }
-    }
+    fetch("/api/portfolio", { cache: "no-store" })
+      .then((res) => res.json())
+      .then((data) => setItems(Array.isArray(data) ? data : []))
+      .catch(() => {});
   }, []);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    window.localStorage.setItem("portfolio-data", JSON.stringify(items));
-  }, [items]);
 
   const totalByType = useMemo(
     () => items.reduce((acc, item) => ({ ...acc, [item.type]: (acc[item.type] || 0) + 1 }), {}),
@@ -52,56 +40,92 @@ export default function AdminTable({ initialData }) {
     setTimeout(() => setAlert(null), 2500);
   };
 
-  const addItem = () => {
+  const addItem = async () => {
     if (!draft.title || !draft.type) {
       showAlert("Title and type are required", "error");
       return;
     }
-    const id = `${draft.title.toLowerCase().replace(/\s+/g, "-")}-${Date.now()}`;
-    const nextItem = {
-      id,
+    const payload = {
       title: draft.title,
       type: draft.type,
       images: draft.images.length
         ? draft.images
         : [draft.image || "https://images.unsplash.com/photo-1498050108023-c5249f4df085"],
-      links: { website: draft.link, github: "", video: "" },
-      description: draft.description || "Quick draft description for a new case study."
+      link: draft.link,
+      description: draft.description
     };
-    setItems([nextItem, ...items]);
-    setDraft(defaultNewItem);
-    setImageUrl("");
-    showAlert("Portfolio added", "success");
+    setLoading(true);
+    try {
+      const res = await fetch("/api/portfolio", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const created = await res.json();
+      if (!res.ok) throw new Error(created?.error || "Failed to add");
+      setItems([created, ...items]);
+      setDraft(defaultNewItem);
+      setImageUrl("");
+      showAlert("Portfolio added", "success");
+    } catch (err) {
+      showAlert(err.message || "Failed to add portfolio", "error");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const removeItem = (id) => {
-    setItems(items.filter((item) => item.id !== id));
-    showAlert("Portfolio removed", "warning");
+  const removeItem = async (id) => {
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/portfolio?id=${encodeURIComponent(id)}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Failed to remove");
+      setItems(items.filter((item) => item.id !== id));
+      showAlert("Portfolio removed", "warning");
+    } catch (err) {
+      showAlert(err.message || "Failed to remove portfolio", "error");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const startEdit = (item) => {
     setEditingId(item.id);
     setEditDraft({
       ...item,
-      link: item.links.website || item.links.video || "",
+      link: item.links?.website || item.links?.video || "",
       images: item.images || []
     });
     setEditImageUrl("");
   };
 
-  const saveEdit = () => {
+  const saveEdit = async () => {
     if (!editingId || !editDraft) {
       showAlert("Nothing to update", "warning");
       return;
     }
-    const updated = {
+    const payload = {
       ...editDraft,
+      id: editingId,
       links: { website: editDraft.link, video: "", github: "" }
     };
-    setItems(items.map((it) => (it.id === editingId ? updated : it)));
-    setEditingId(null);
-    setEditDraft(null);
-    showAlert("Portfolio updated", "success");
+    setLoading(true);
+    try {
+      const res = await fetch("/api/portfolio", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const updated = await res.json();
+      if (!res.ok) throw new Error(updated?.error || "Failed to update");
+      setItems(items.map((it) => (it.id === editingId ? updated : it)));
+      setEditingId(null);
+      setEditDraft(null);
+      showAlert("Portfolio updated", "success");
+    } catch (err) {
+      showAlert(err.message || "Failed to update portfolio", "error");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const cancelEdit = () => {
@@ -157,6 +181,7 @@ export default function AdminTable({ initialData }) {
   return (
     <div className="space-y-6">
       <AlertBanner alert={alert} onClose={() => setAlert(null)} />
+      {loading && <p className="text-xs text-[color:var(--muted-foreground)]">Saving...</p>}
 
       <div
         className="grid gap-4 rounded-2xl border p-5 shadow-sm sm:grid-cols-4"
@@ -270,7 +295,8 @@ export default function AdminTable({ initialData }) {
         <div className="mt-3 flex justify-end">
           <button
             onClick={addItem}
-            className="rounded-full px-4 py-2 text-sm font-semibold transition hover:-translate-y-0.5 hover:shadow-lg"
+            disabled={loading}
+            className="rounded-full px-4 py-2 text-sm font-semibold transition hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-60"
             style={{ background: "var(--primary)", color: "var(--primary-foreground)" }}
           >
             Add portfolio
@@ -334,7 +360,8 @@ export default function AdminTable({ initialData }) {
                 <div className="flex gap-2">
                   <button
                     onClick={saveEdit}
-                    className="rounded-full px-3 py-1 text-xs font-semibold transition"
+                    disabled={loading}
+                    className="rounded-full px-3 py-1 text-xs font-semibold transition disabled:opacity-60"
                     style={{ background: "var(--primary)", color: "var(--primary-foreground)" }}
                   >
                     Save
@@ -352,14 +379,15 @@ export default function AdminTable({ initialData }) {
               <>
                 <span className="font-semibold text-[color:var(--foreground)]">{item.title}</span>
                 <Badge tone="neutral">{item.type}</Badge>
-                <a href={item.links.website || item.links.video || "#"} className="truncate text-accent hover:underline">
-                  {item.links.website || item.links.video || "—"}
+                <a href={item.links?.website || item.links?.video || "#"} className="truncate text-accent hover:underline">
+                  {item.links?.website || item.links?.video || "—"}
                 </a>
                 <span className="line-clamp-2 text-[color:var(--muted-foreground)]">{item.description}</span>
                 <div className="flex gap-2">
                   <button
                     onClick={() => removeItem(item.id)}
-                    className="rounded-full border px-3 py-1 text-xs font-semibold transition"
+                    disabled={loading}
+                    className="rounded-full border px-3 py-1 text-xs font-semibold transition disabled:opacity-60"
                     style={{ borderColor: "var(--border)", color: "var(--muted-foreground)", background: "var(--card)" }}
                   >
                     Remove

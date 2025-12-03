@@ -3,20 +3,22 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Badge from "../../../components/Badge";
 import SectionHeader from "../../../components/SectionHeader";
-import { portfolioItems } from "../../../data/portfolio";
+import { readStore } from "../../../lib/portfolioStore";
 
-const findItem = (id) => portfolioItems.find((entry) => entry.id === id);
+const findItem = (items, id) => items.find((entry) => entry.id === id);
 
 export async function generateMetadata({ params }) {
-  const item = findItem(params.id);
+  const items = await readStore();
+  const item = findItem(items, params.id);
   return {
     title: item ? `${item.title} | Portfolio` : "Project not found",
     description: item?.description || "Portfolio detail"
   };
 }
 
-export default function PortfolioDetail({ params }) {
-  const item = findItem(params.id);
+export default async function PortfolioDetail({ params }) {
+  const items = await readStore();
+  const item = findItem(items, params.id);
   if (!item) return notFound();
 
   return (

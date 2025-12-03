@@ -5,9 +5,8 @@ import { useEffect, useState } from "react";
 import SectionHeader from "../../../components/SectionHeader";
 import AdminTable from "../../../components/AdminTable";
 import AlertBanner from "../../../components/AlertBanner";
-import { portfolioItems } from "../../../data/portfolio";
 
-export default function DashboardClient() {
+export default function DashboardClient({ initialData }) {
   const router = useRouter();
   const [alert, setAlert] = useState(null);
 
@@ -40,7 +39,7 @@ export default function DashboardClient() {
           </button>
         }
       />
-      <AdminTable initialData={portfolioItems} />
+      <AdminTable initialData={initialData || []} />
     </div>
   );
 }

@@ -2,9 +2,10 @@ import Hero from "../components/Hero";
 import PortfolioGrid from "../components/PortfolioGrid";
 import SectionHeader from "../components/SectionHeader";
 import Badge from "../components/Badge";
-import { portfolioItems } from "../data/portfolio";
+import { readStore } from "../lib/portfolioStore";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const portfolioItems = await readStore();
   const featured = portfolioItems.slice(0, 3);
 
   return (
