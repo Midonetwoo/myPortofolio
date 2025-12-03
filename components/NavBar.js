@@ -7,8 +7,7 @@ import PillNav from "./PillNav";
 const links = [
   { href: "/", label: "Home" },
   { href: "/gallery", label: "Gallery" },
-  { href: "/about", label: "About" },
-  { href: "/admin", label: "Admin" }
+  { href: "/about", label: "About" }
 ];
 
 export default function NavBar() {

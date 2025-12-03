@@ -9,7 +9,7 @@ export default function PortfolioCard({ item }) {
 
   return (
     <Link href={`/portfolio/${item.id}`} className="group block h-full">
-      <SpotlightCard spotlightColor="rgba(59,130,246,0.2)" className="h-full border border-slate-200 bg-white shadow-sm transition group-hover:-translate-y-1 group-hover:shadow-lg">
+      <SpotlightCard spotlightColor="rgba(59,130,246,0.5)" className="h-full border border-slate-200 bg-white shadow-sm transition group-hover:-translate-y-1 group-hover:shadow-lg">
         <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-slate-100">
           {imageSrc ? (
             <Image

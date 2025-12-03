@@ -1,0 +1,30 @@
+Project context (myPortofolio)
+=============================
+
+Stack & tooling
+- Next.js 14 (app router), React 18, TailwindCSS, GSAP, motion.
+- Custom components: CardSwap, Masonry, FlowingMenu, PillNav (GSAP), SpotlightCard, BlurText, ShinyText.
+- Theme: twitter.json tokens applied in app/globals.css (light/dark via body class). Tailwind extended keyframes: shine, marquee.
+- Images allowed: images.unsplash.com, i.pinimg.com in next.config.js.
+
+Data & API
+- Portfolio data persisted to file: data/portfolio-store.json via API route app/api/portfolio/route.js (GET/POST/PUT/DELETE).
+- Seed in data/portfolio.js is used to bootstrap store. Middleware: none for API.
+- Admin dashboard reads/writes through API; client-side persistence removed.
+
+Routing
+- Pages: / (hero CardSwap, featured grid, flowing category filter), /gallery (masonry), /about, /portfolio/[id] (reads store), /admin (login), /admin/dashboard (guarded by middleware.js checking admin-auth cookie).
+- Loading UI: app/loading.js uses ShinyText.
+
+Auth
+- Demo admin: email admin@example.com, password admin123. Cookie admin-auth enables dashboard; middleware redirects unauthenticated to /admin.
+
+UI highlights
+- Nav: PillNav (centered) with animated pills; dark-mode toggle (icon) alongside.
+- Hero: CardSwap stacked cards + BlurText heading.
+- Portfolio cards use SpotlightCard; gallery uses Masonry with GSAP.
+- FlowingMenu filters by discipline with animated transitions.
+
+Notes
+- Do not modify user data in data/portfolio-store.json unless requested.
+- Theme/colors should reference CSS vars for light/dark consistency.
