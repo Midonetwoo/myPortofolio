@@ -32,9 +32,9 @@ export default function HomeCategorySection({ items }) {
   );
 
   return (
-    <section className="grid gap-6 lg:grid-cols-3">
+    <section className="grid gap-6">
       <div className="lg:col-span-1">
-        <div className="h-[320px] sm:h-[360px]">
+        <div className="h-[360px] min-h-[360px]">
           <FlowingMenu items={menuItems} />
         </div>
       </div>

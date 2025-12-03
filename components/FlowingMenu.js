@@ -7,7 +7,7 @@ export default function FlowingMenu({ items = [] }) {
   return (
     <div className="h-full w-full overflow-hidden">
       <nav
-        className="flex h-full w-full min-h-[320px] flex-col gap-2 rounded-2xl border p-2 shadow-sm"
+        className="flex h-full w-full min-h-[360px] flex-col gap-2 rounded-2xl border p-2 shadow-sm"
         style={{ background: "var(--card)", borderColor: "var(--border)" }}
       >
         {items.map((item, idx) => (
@@ -64,7 +64,7 @@ function MenuItem({ link, text, image, onClick }) {
   return (
     <div className="relative flex-1 overflow-hidden rounded-xl border" style={{ borderColor: "var(--border)" }} ref={itemRef}>
       <a
-        className="flex h-full items-center justify-center cursor-pointer text-center text-xl font-semibold uppercase text-[color:var(--foreground)] no-underline transition hover:text-[color:var(--background)]"
+        className="flex h-full items-center justify-center cursor-pointer text-center text-xl sm:text-2xl font-semibold uppercase text-[color:var(--foreground)] no-underline transition hover:text-[color:var(--background)]"
         href={link}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
