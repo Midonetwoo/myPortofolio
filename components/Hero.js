@@ -11,7 +11,7 @@ export default function Hero() {
           <Badge tone="ember">Portfolio</Badge>
           <BlurText
             text="Visual storytelling that blends motion, design, and the web."
-            delay={120}
+            delay={300}
             animateBy="words"
             direction="top"
             className="text-4xl font-display font-semibold text-white sm:text-5xl"

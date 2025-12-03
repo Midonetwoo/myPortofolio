@@ -38,7 +38,7 @@ export default function HomeCategorySection({ items }) {
           <FlowingMenu items={menuItems} />
         </div>
       </div>
-      <div className="lg:col-span-2 space-y-3">
+      <div className="space-y-3">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold text-[color:var(--foreground)]">
             {active} <span className="text-sm text-[color:var(--muted-foreground)]">({filtered.length})</span>
