@@ -1,8 +1,8 @@
 'use client';
 
 import { useMemo, useState } from "react";
-import Badge from "./Badge";
 import AlertBanner from "./AlertBanner";
+import Badge from "./Badge";
 
 const defaultNewItem = {
   title: "",
@@ -23,10 +23,7 @@ export default function AdminTable({ initialData }) {
   const [editImageUrl, setEditImageUrl] = useState("");
 
   const totalByType = useMemo(() => {
-    return items.reduce(
-      (acc, item) => ({ ...acc, [item.type]: (acc[item.type] || 0) + 1 }),
-      {}
-    );
+    return items.reduce((acc, item) => ({ ...acc, [item.type]: (acc[item.type] || 0) + 1 }), {});
   }, [items]);
 
   const showAlert = (message, type = "info") => {
@@ -35,8 +32,11 @@ export default function AdminTable({ initialData }) {
   };
 
   const addItem = () => {
-    if (!draft.title || !draft.type) return;
-    const id = draft.title.toLowerCase().replace(/\s+/g, "-");
+    if (!draft.title || !draft.type) {
+      showAlert("Title and type are required", "error");
+      return;
+    }
+    const id = `${draft.title.toLowerCase().replace(/\s+/g, "-")}-${Date.now()}`;
     const nextItem = {
       id,
       title: draft.title,
@@ -69,7 +69,10 @@ export default function AdminTable({ initialData }) {
   };
 
   const saveEdit = () => {
-    if (!editingId || !editDraft) return;
+    if (!editingId || !editDraft) {
+      showAlert("Nothing to update", "warning");
+      return;
+    }
     const updated = {
       ...editDraft,
       links: { website: editDraft.link, video: "", github: "" }
@@ -133,6 +136,7 @@ export default function AdminTable({ initialData }) {
   return (
     <div className="space-y-6">
       <AlertBanner alert={alert} onClose={() => setAlert(null)} />
+
       <div
         className="grid gap-4 rounded-2xl border p-5 shadow-sm sm:grid-cols-4"
         style={{ background: "var(--card)", borderColor: "var(--border)" }}
@@ -199,6 +203,7 @@ export default function AdminTable({ initialData }) {
             style={{ borderColor: "var(--border)", color: "var(--foreground)", background: "var(--card)" }}
           />
         </div>
+
         <div className="mt-3 grid gap-3 lg:grid-cols-3">
           <div
             className="rounded-xl border border-dashed p-4 text-sm"
@@ -240,6 +245,7 @@ export default function AdminTable({ initialData }) {
             ))}
           </div>
         </div>
+
         <div className="mt-3 flex justify-end">
           <button
             onClick={addItem}
