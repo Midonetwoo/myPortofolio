@@ -5,8 +5,8 @@ import Masonry from "../../components/Masonry";
 export default function MasonryGallery({ items }) {
   return (
     <div
-      className="relative min-h-[600px] rounded-3xl border p-4 shadow-sm sm:p-6"
-      style={{ background: "var(--card)", borderColor: "var(--border)" }}
+      className="relative min-h-[600px] rounded-2xl border p-4 shadow-sm sm:p-6"
+      style={{borderColor: "var(--border)" }}
     >
       <Masonry
         items={items}

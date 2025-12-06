@@ -20,13 +20,17 @@ export default async function GalleryPage() {
   );
 
   return (
-    <div className="space-y-8">
-      <SectionHeader
-        eyebrow="Gallery"
-        title="Frames, stills, and visual pulls"
-        description="A curated stream of visuals captured from cinematography cuts, poster studies, and website hero images."
-      />
-      <MasonryGallery items={items} />
-    </div>
+    <>
+      <div className="space-y-8">
+        <SectionHeader
+          eyebrow="Gallery"
+          title="Frames, stills, and visual pulls"
+          description="A curated stream of visuals captured from cinematography cuts, poster studies, and website hero images."
+        />
+      </div>
+      <div className="mt-6 -mx-4 sm:-mx-8 md:-mx-10 lg:-mx-12">
+        <MasonryGallery items={items} />
+      </div>
+    </>
   );
 }

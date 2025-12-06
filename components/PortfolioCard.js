@@ -9,7 +9,7 @@ export default function PortfolioCard({ item }) {
 
   return (
     <Link href={`/portfolio/${item.id}`} className="group block h-full">
-      <SpotlightCard spotlightColor="rgba(59,130,246,0.5)" className="h-full border border-slate-200 bg-white shadow-sm transition group-hover:-translate-y-1 group-hover:shadow-lg">
+      <SpotlightCard spotlightColor="var(--primary)" className="h-full border border-[var(--card-foreground)] bg-[var(--card)] shadow-sm transition group-hover:-translate-y-1 group-hover:shadow-lg">
         <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-slate-100">
           {imageSrc ? (
             <Image
@@ -26,12 +26,12 @@ export default function PortfolioCard({ item }) {
         <div className="mt-4 flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <Badge tone="accent">{item.type}</Badge>
-            <span className="text-xs uppercase tracking-[0.2em] text-slate-400">#{item.id}</span>
+            {/* <span className="text-xs uppercase tracking-[0.2em] text-slate-400">#{item.id}</span> */}
           </div>
-          <h3 className="text-lg font-semibold text-ink">{item.title}</h3>
-          <p className="line-clamp-2 text-sm text-slate-600">{item.description}</p>
+          <h3 className="text-lg font-semibold text-[var(--secondary)]">{item.title}</h3>
+          <p className="line-clamp-2 text-sm text-[var(--secondary)]">{item.description}</p>
           <div className="mt-auto flex items-center gap-2 text-sm font-semibold text-accent group-hover:gap-3">
-            Read case study
+            More
             <span aria-hidden>→</span>
           </div>
         </div>
