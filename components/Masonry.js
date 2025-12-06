@@ -207,12 +207,17 @@ const Masonry = ({
           onMouseLeave={(e) => handleMouseLeave(item.id, e.currentTarget)}
         >
           <div
-            className="relative h-full w-full rounded-[10px] bg-cover bg-center uppercase shadow-[0px_10px_50px_-10px_rgba(0,0,0,0.2)]"
+            className="group relative h-full w-full overflow-hidden rounded-[10px] bg-cover bg-center shadow-[0px_10px_50px_-10px_rgba(0,0,0,0.2)]"
             style={{ backgroundImage: `url(${item.img})` }}
           >
             {colorShiftOnHover && (
-              <div className="color-overlay pointer-events-none absolute inset-0 rounded-[10px] bg-gradient-to-tr from-pink-500/50 to-sky-500/50 opacity-0" />
+              <div className="color-overlay pointer-events-none absolute inset-0 rounded-[10px] bg-gradient-to-tr from-pink-500/50 to-sky-500/50 opacity-0 transition duration-300" />
             )}
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 transition duration-300 group-hover:opacity-100">
+              <div className="absolute bottom-3 left-3 right-3 text-xs font-semibold uppercase tracking-wide text-white drop-shadow-sm">
+                {item.title || "Portfolio item"}
+              </div>
+            </div>
           </div>
         </div>
       ))}

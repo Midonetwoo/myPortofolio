@@ -15,7 +15,8 @@ export default async function GalleryPage() {
       id: `${item.id}-${idx}`,
       img: `${image}${image.startsWith("data:") ? "" : "?auto=format&fit=crop&w=1200&q=80"}`,
       url: `/portfolio/${item.id}`,
-      height: heights[(index + idx) % heights.length]
+      height: heights[(index + idx) % heights.length],
+      title: item.title
     }))
   );
 
@@ -28,7 +29,7 @@ export default async function GalleryPage() {
           description="A curated stream of visuals captured from cinematography cuts, poster studies, and website hero images."
         />
       </div>
-      <div className="mt-6 -mx-4 sm:-mx-8 md:-mx-10 lg:-mx-12">
+      <div className="mt-6 -mx-4 sm:-mx-8 md:-mx-10 lg:-mx-12"> 
         <MasonryGallery items={items} />
       </div>
     </>

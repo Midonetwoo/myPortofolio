@@ -28,10 +28,10 @@ export default function Hero() {
               View gallery
             </Link>
             <Link
-              href="/portfolio/site-lumen"
+              href="/about"
               className="rounded-full border border-white/40 px-5 py-3 text-sm font-semibold text-white transition hover:border-white hover:bg-white/5"
             >
-              See a featured project
+              or Get to Know About Me
             </Link>
           </div>
         </div>
