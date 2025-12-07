@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { FiMoon, FiSun } from "react-icons/fi";
 import PillNav from "./PillNav";
 
 const links = [
@@ -49,8 +50,8 @@ export default function NavBar() {
           className="hidden h-10 w-10 items-center justify-center rounded-full border text-lg text-[color:var(--foreground)] shadow-sm transition-transform duration-300 hover:-translate-y-0.5 hover:shadow-lg md:inline-flex"
           style={{ borderColor: "var(--border)", background: "var(--card)" }}
         >
-          <span className={`inline-block transition-transform duration-300 ${theme === "dark" ? "rotate-180" : "rotate-0"}`}>
-            {theme === "dark" ? "N" : "D"}
+          <span className={`inline-block transition-transform duration-300 ${theme === "dark" ? "rotate-0" : "rotate-180"}`}>
+            {theme === "dark" ? <FiMoon className="h-5 w-5" /> : <FiSun className="h-5 w-5" />}
           </span>
         </button>
       </div>
