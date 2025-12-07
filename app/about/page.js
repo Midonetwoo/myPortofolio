@@ -27,15 +27,15 @@ const techLogos = [
 ];
 
 const socialLinks = [
-  { href: "https://instagram.com", label: "Instagram", icon: <SiInstagram className="h-6 w-6" /> },
-  { href: "https://github.com", label: "GitHub", icon: <SiGithub className="h-6 w-6" /> },
-  { href: "https://linkedin.com", label: "LinkedIn", icon: <SiLinkedin className="h-6 w-6" /> },
-  { href: "mailto:hello@example.com", label: "Gmail", icon: <SiGmail className="h-6 w-6" /> },
-  { href: "https://tiktok.com", label: "TikTok", icon: <SiTiktok className="h-6 w-6" /> },
-  { href: "https://example.com", label: "Website", icon: <FiGlobe className="h-6 w-6" /> }
+  { href: "https://www.instagram.com/mhmddirga.aprilians_/", label: "Instagram", icon: <SiInstagram className="h-6 w-6" /> },
+  { href: "https://github.com/Midonetwoo", label: "GitHub", icon: <SiGithub className="h-6 w-6" /> },
+  { href: "https://www.linkedin.com/in/muhammad-dirga-apriliansyah-863348265/", label: "LinkedIn", icon: <SiLinkedin className="h-6 w-6" /> },
+  { href: "mailto:apriliansyahdirga@gmail.com", label: "Gmail", icon: <SiGmail className="h-6 w-6" /> },
+  { href: "https://www.tiktok.com/@dirga.aprilian12", label: "TikTok", icon: <SiTiktok className="h-6 w-6" /> },
+  { href: "/", label: "Website", icon: <FiGlobe className="h-6 w-6" /> }
 ];
 
-const achievements = [
+const achievements = [ 
   { icon: <FiFilm className="h-5 w-5 text-[color:var(--foreground)]" />, text: "Short film selections at indie festivals (cinematography and edit supervision)." },
   { icon: <FiAward className="h-5 w-5 text-[color:var(--foreground)]" />, text: "Brand refresh that drove a 30% lift in launch sign-ups." },
   { icon: <FiTrendingUp className="h-5 w-5 text-[color:var(--foreground)]" />, text: "Delivered 6+ Next.js sites with sub-1s LCP targets and clean handoffs." },
