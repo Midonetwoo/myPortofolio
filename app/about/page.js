@@ -74,7 +74,7 @@ export default function AboutPage() {
               className="overflow-hidden"
             >
               <img
-                src="https://images.unsplash.com/photo-1502685104226-ee32379fefbe?auto=format&fit=crop&w=800&q=80"
+                src="/profile.jpg"
                 alt="Portrait"
                 className="h-full w-full object-cover"
               />
